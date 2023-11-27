@@ -57,6 +57,11 @@ export default function AuthProvider({children}) {
     }
   };
 
+  const logOut = async () => {
+    await AsyncStorage.clear()
+    .then(() => setUser(null));
+  }; 
+
   const loadingStorage = async () => {
     setLoading(true);
     const storageToken = await AsyncStorage.getItem('@finApp');
@@ -82,7 +87,7 @@ export default function AuthProvider({children}) {
 
   return (
     <AuthContext.Provider
-      value={{signed: !!user, user, signUp, signIn, loadingAuth, loading}}>
+      value={{signed: !!user, user, signUp, signIn, logOut, loadingAuth, loading}}>
       {children}
     </AuthContext.Provider>
   );
