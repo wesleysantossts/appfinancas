@@ -11,7 +11,7 @@ import {
 import {AuthContext} from '../../contexts/auth';
 
 export default function SignUp() {
-  const {user, signUp, loading} = useContext(AuthContext);
+  const {user, signUp, loadingAuth} = useContext(AuthContext);
   const [signupUser, setSignupUser] = useState({
     name: '',
     email: '',
@@ -57,7 +57,7 @@ export default function SignUp() {
           />
         </AreaInput>
         <SubmitButton onPress={handleSubmit}>
-          {loading ? (
+          {loadingAuth ? (
             <ActivityIndicator size={20} color={'#FFF'} />
           ) : (
             <SubmitText>Cadastrar</SubmitText>
