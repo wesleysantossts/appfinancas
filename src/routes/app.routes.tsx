@@ -1,6 +1,7 @@
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import Home from '../pages/Home';
 import New from '../pages/New';
+import Profile from '../pages/Profile';
 const AppDrawer = createDrawerNavigator();
 
 export default function AppRoutes() {
@@ -12,6 +13,10 @@ export default function AppRoutes() {
     {
       name: 'Registrar', 
       component: New,
+    },
+    {
+      name: 'Perfil', 
+      component: Profile,
     },
   ];
   return (
