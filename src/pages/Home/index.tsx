@@ -1,5 +1,5 @@
 import React, {useContext, useState, useEffect} from 'react';
-import {View, Text, FlatList, TouchableOpacity} from 'react-native';
+import {View, Text, FlatList, TouchableOpacity, Modal} from 'react-native';
 import {AuthContext} from '../../contexts/auth';
 import {format, setDate} from 'date-fns';
 
@@ -12,12 +12,14 @@ import { useIsFocused } from '@react-navigation/native';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import HistoricoList from '../../components/HistoricoList';
+import CalendarModal from '../../components/CalendarModal';
 
 export default function Home() {
   const isFocused = useIsFocused();
   const [listBalance, setListBalance] = useState([]);
   const [movements, setMovements] = useState(new Date());
   const [dateMovements, setDateMovements] = useState(new Date());
+  const [modalVisible, setModalVisible] = useState(false);
   
   const getMovements = async (isActive) => {
     let dateFormated = format(dateMovements, 'dd/MM/yyyy');
@@ -49,14 +51,16 @@ export default function Home() {
     }
   };
 
+  const filterDateMovements = (dateSelected: any) => {
+    setDateMovements(dateSelected);
+  }
+
   useEffect(() => {
     let isActive = true;
     getMovements(isActive);
     return () => isActive = false;
   }, [isFocused, dateMovements])
 
-
-  const {user, logOut} = useContext(AuthContext);
   return (
     <Background>
       <Header title='Minhas movimentações' />
@@ -69,7 +73,7 @@ export default function Home() {
       />
 
       <Area>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => setModalVisible(true)}>
           <Icon name='event' color='#121212' size={30} />
         </TouchableOpacity>
         <Title>Últimas movimentações</Title>
@@ -82,6 +86,13 @@ export default function Home() {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{paddingBottom: 20}}
       />
+
+      <Modal visible={modalVisible} animationType='fade' transparent={true}>
+        <CalendarModal 
+          setVisible={() => setModalVisible(false)}
+          handleFilter={filterDateMovements}
+        />
+      </Modal>
     </Background>
   );
 }
